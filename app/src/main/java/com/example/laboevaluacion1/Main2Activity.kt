@@ -18,6 +18,9 @@ import com.example.laboevaluacion1.AppConstants.P8_KEY
 import com.example.laboevaluacion1.AppConstants.P9_KEY
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_main2.*
+import org.json.JSONException
+
+import org.json.JSONObject
 
 
 class Main2Activity : AppCompatActivity() {
@@ -28,18 +31,9 @@ class Main2Activity : AppCompatActivity() {
 
         val mIntent = intent
         val extras = mIntent!!.extras
-        var data =
-            (extras.getString(USER_KEY) + "," + extras.getString(EMAIL_KEY) + "," + extras.getString(TOTAL_KEY) + "," + extras.getString(
-                P1_KEY
-            )
-                    + "," + extras.getString(P2_KEY) + "," + extras.getString(P3_KEY) + "," + extras.getString(P4_KEY) + "," + extras.getString(
-                P5_KEY
-            )
-                    + "," + extras.getString(P6_KEY) + "," + extras.getString(P7_KEY) + "," + extras.getString(P8_KEY) + "," + extras.getString(
-                P9_KEY
-            ))
+        var data = bundleToJson(extras)
         if (mIntent != null) {
-            et_user2.text =  et_user2.text.toString() + extras.getString(USER_KEY)
+            et_user2.text = et_user2.text.toString() + extras.getString(USER_KEY)
             et_email2.text = et_email2.text.toString() + extras.getString(EMAIL_KEY)
             tv_total.text = extras.getString(TOTAL_KEY)
             tv_1_2.text = extras.getString(P1_KEY)
@@ -63,5 +57,21 @@ class Main2Activity : AppCompatActivity() {
             startActivity(mIntent2)
         })
 
+    }
+
+    fun bundleToJson(bundle: Bundle): String {
+        val json = JSONObject()
+        val keys = bundle.keySet()
+        for ( i in keys) {
+            try {
+                json.put( i, bundle.get(i))
+
+            } catch (e: JSONException) {
+
+            }
+
+        }
+
+        return json.toString()
     }
 }
